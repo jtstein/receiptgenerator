@@ -1,0 +1,122 @@
+#ifndef _darr
+#define _darr
+
+
+#include <iostream>
+using std::cout;
+
+template <typename T>
+class darray
+{
+public:
+    darray( );
+    //Initializes with a capacity of 50.
+
+    darray(int capacityValue);
+
+    darray(const darray& pfaObject);
+
+    void addElement(T element);
+    //Precondition: The array is not full.
+    //Postcondition: The element has been added.
+
+    bool full( ) const { return (capacity == used); }
+    //Returns true if the array is full, false otherwise.
+
+    int getCapacity( ) const { return capacity; }
+
+    int getNumberUsed( ) const { return used; }
+
+    void emptyArray( ){ used = 0; }
+    //Empties the array.
+
+    T& operator[](int index);
+    //Read and change access to elements 0 through numberUsed - 1.
+
+    darray& operator =(const darray& rightSide);
+    darray& operator [] (const unsigned& i) const;
+
+    ~darray( );
+private:
+    T* a;
+    int capacity; //for the size of the array.
+    int used; //for the number of array positions currently in use.
+
+};
+
+
+template <typename T>
+darray<T>::darray( ) :capacity(50), used(0)
+{
+    a = new T[capacity];
+}
+
+template <typename T>
+darray<T>::darray(int size) :capacity(size), used(0)
+{
+    a = new T[capacity];
+}
+
+template <typename T>
+darray<T>::darray(const darray& pfaObject) 
+  :capacity(pfaObject.getCapacity( )), used(pfaObject.getNumberUsed( ))
+{
+    a = new T[capacity];
+    for (int i =0; i < used; i++)
+        a[i] = pfaObject.a[i];
+}
+
+template <typename T>
+void darray<T>::addElement(T element)
+{
+    if (used >= capacity)
+    {
+        cout << "Attempt to exceed capacity in darray.\n";
+        exit(0);
+    }
+    a[used] = element;
+    used++;
+}
+
+template <typename T>
+T& darray<T>::operator[](int index)
+{
+    if (index >= used)
+    {
+        cout << "Illegal index in darray.\n";
+        exit(0);
+    }
+
+    return a[index];
+}
+
+template <typename T>
+darray<T>& darray<T>::operator =(const darray& rightSide)
+{
+    if (capacity != rightSide.capacity)
+    {
+        delete [] a;
+        a = new T[rightSide.capacity];
+    }
+
+    capacity = rightSide.capacity;
+    used = rightSide.used;
+    for (int i = 0; i < used; i++)
+        a[i] = rightSide.a[i];
+
+    return *this;
+}
+
+template <typename T>
+darray<T>& darray<T>::operator [] (const unsigned& i) const
+{
+	return a[i];
+}
+
+template <typename T>
+darray<T>::~darray( )
+{
+    delete [] a;
+}
+
+#endif
