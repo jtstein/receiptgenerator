@@ -1,4 +1,4 @@
-//Jordan Stein 101390302
+//Jordan Stein
 //CSCI 2312 Fall 2014
 //Grocery Store Shopping Project
 //stores.h
